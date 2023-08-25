@@ -571,17 +571,17 @@ if game.PlaceId == 6403373529 or game.PlaceId == 11520107397 or game.PlaceId == 
         Flag = "aimp",
         Callback = function(aimp)
             des = aimp
-            game.RunService.Stepped:Connect(function()
-                wait(1)
-                ReplicatedStorage.NullAbility:FireServer()
-                for i = 1, 3 do
-                    for i, v in pairs(Workspace:GetChildren()) do
-                        if v.Name == "Imp" and v:FindFirstChild("Body") then
-                            ReplicatedStorage.b:FireServer(v.Body)
+            while wait()do
+                if des == true then
+                    for i,v in pairs(Workspace:GetChildren()) do
+                        if v.Name == "Imp" then
+                            if v:FindFirstChild("Body") then
+                                ReplicatedStorage.KSHit:FireServer(v.Body)
+                            end
                         end
                     end
                 end
-            end)
+            end
         end
     })
     local time = tab2:CreateButton({
@@ -792,4 +792,3 @@ if game.PlaceId == 6403373529 or game.PlaceId == 11520107397 or game.PlaceId == 
         end
     })
 end
-
