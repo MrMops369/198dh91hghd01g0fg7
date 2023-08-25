@@ -584,6 +584,19 @@ if game.PlaceId == 6403373529 or game.PlaceId == 11520107397 or game.PlaceId == 
             end)
         end
     })
+    local time = tab2:CreateButton({
+        Name = "Timestop + Rejoin",
+        Callback = function()
+            repeat wait() until game:IsLoaded()
+                fireclickdetector(game:GetService("Workspace").Lobby["God's Hand"].ClickDetector)
+                game:GetService("ReplicatedStorage").TimestopJump:FireServer()
+                game:GetService("ReplicatedStorage").Timestopchoir:FireServer()
+                game:GetService("ReplicatedStorage").Timestop:FireServer()
+                wait(2)
+                game:GetService("TeleportService"):Teleport(game.PlaceId, game:GetService("Players").LocalPlayer)
+
+        end
+    })
     getgenv()created = false
     local bouton = tab2:CreateButton({
         Name = "Create the Ability use Tab",
@@ -779,3 +792,4 @@ if game.PlaceId == 6403373529 or game.PlaceId == 11520107397 or game.PlaceId == 
         end
     })
 end
+
