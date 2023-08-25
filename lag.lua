@@ -569,7 +569,7 @@ if game.PlaceId == 6403373529 or game.PlaceId == 11520107397 or game.PlaceId == 
         Flag = "aimp",
         Callback = function(aimp)
             des = aimp
-            while wait()do
+            game.RunService.RenderStepped:Connect(function()
                 if des == true then
                     for i,v in pairs(Workspace:GetChildren()) do
                         if v.Name == "Imp" then
@@ -579,7 +579,7 @@ if game.PlaceId == 6403373529 or game.PlaceId == 11520107397 or game.PlaceId == 
                         end
                     end
                 end
-            end
+            end)
         end
     })
     local time = tab2:CreateButton({
