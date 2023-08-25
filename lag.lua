@@ -555,14 +555,12 @@ if game.PlaceId == 6403373529 or game.PlaceId == 11520107397 or game.PlaceId == 
         CurrentValue = false,
         Flag = "imp",
         Callback = function(oo)
-            getgenv()
-            imp = oo
-            game.RunService.Stepped:Connect(function()
+            getgenv()imp = oo
+            while wait(0.05) do
                 if imp == true then
-                    wait(0.1)
                     ReplicatedStorage.NullAbility:FireServer()
                 end
-            end)
+            end
         end
     })
     local aimp = tab2:CreateToggle({
