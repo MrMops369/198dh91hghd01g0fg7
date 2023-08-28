@@ -1,3 +1,4 @@
+local test = 0
 if game.PlaceId == 6403373529 or game.PlaceId == 11520107397 or game.PlaceId == 8260276694 or game.PlaceId == 9015014224 then
     repeat wait() until game.Players.LocalPlayer:FindFirstChild("leaderstats") ~= nil
     local Workspace = game:GetService("Workspace")
@@ -543,7 +544,7 @@ if game.PlaceId == 6403373529 or game.PlaceId == 11520107397 or game.PlaceId == 
             end
         end
     })
-    local noclip = tab3:CreatToggle({
+    local noclip = tab3:CreateToggle({
         Name = "Cloud Noclip",
         CurrentValue = false,
         Flag = "oijhohpoh",
