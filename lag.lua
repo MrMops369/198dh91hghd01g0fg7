@@ -480,7 +480,7 @@ if game.PlaceId == 6403373529 or game.PlaceId == 11520107397 or game.PlaceId == 
         end
     })
     local nimbus = tab3:CreateButton({
-            Name = "Spawn a nimbus"
+            Name = "Spawn a nimbus",
             Callback = function()
                 ReplicatedStorage.NimbusAbility:FireServer()
             end
