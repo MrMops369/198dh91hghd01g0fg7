@@ -9,8 +9,16 @@ if game.PlaceId == 6403373529 or game.PlaceId == 11520107397 or game.PlaceId == 
     local oldt = 0
     local invist = 1
     local kickpart = Instance.new("Part")
+    getgenv().shawnjbragdon = getgenv().shawnjbragdon or {}
     kickpart.CFrame = Workspace.Lobby.brazil.portal.CFrame
     kickpart.Parent = Workspace
+    mycloud = game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name .. "_Cloud")
+    spawn(function()
+        while true do
+            task.wait()
+            mycloud = Workspace:FindFirstChild(Players.LocalPlayer.Name .. "_Cloud")
+        end
+    end)
     local GloveAbilitys = {
         ["Default"] = game:GetService("ReplicatedStorage"):WaitForChild("b"),
         ["Pusher"] = game:GetService("ReplicatedStorage"):WaitForChild("PusherWall"),
@@ -535,6 +543,39 @@ if game.PlaceId == 6403373529 or game.PlaceId == 11520107397 or game.PlaceId == 
             end
         end
     })
+    local noclip = tab3:CreatToggle({
+        Name = "Cloud Noclip",
+        CurrentValue = false,
+        Flag = "oijhohpoh",
+        Callback = function(noc)
+            local StarterPlayer = game:GetService("StarterPlayer")
+            local RunService = game:GetService("RunService")
+            if noc == true then
+            for index, value in pairs(getgenv().shawnjbragdon) do
+                if value and typeof(value) == "RBXScriptConnection" and tostring(index) == "antifling" then
+                    value:Disconnect()
+                end
+            end
+            getgenv().shawnjbragdon["antifling"] = RunService.Stepped:Connect(function()
+                for _, Player in pairs(Players:GetPlayers()) do
+                    if Player.Character and Player.Character:IsDescendantOf(Workspace) then
+                        for _, BasePart in pairs(Player.Character:GetDescendants()) do
+                            if BasePart:IsA("BasePart") then
+                                BasePart.CanCollide = false
+                            end
+                        end
+                    end
+                end
+                end)
+            else
+                for index, value in pairs(getgenv().shawnjbragdon) do
+                    if value and typeof(value) == "RBXScriptConnection" and tostring(index) == "antifling" then
+                        value:Disconnect()
+                    end
+                end
+        end
+        end
+    })
     local notouch = tab2:CreateButton({
         Name = "CanTouch = false",
         Callback = function()
@@ -555,12 +596,14 @@ if game.PlaceId == 6403373529 or game.PlaceId == 11520107397 or game.PlaceId == 
         CurrentValue = false,
         Flag = "imp",
         Callback = function(oo)
-            getgenv()imp = oo
-            while wait(0.05) do
+            getgenv()
+            imp = oo
+            game.RunService.Stepped:Connect(function()
                 if imp == true then
+                    wait(0.1)
                     ReplicatedStorage.NullAbility:FireServer()
                 end
-            end
+            end)
         end
     })
     local aimp = tab2:CreateToggle({
@@ -569,7 +612,7 @@ if game.PlaceId == 6403373529 or game.PlaceId == 11520107397 or game.PlaceId == 
         Flag = "aimp",
         Callback = function(aimp)
             des = aimp
-            game.RunService.RenderStepped:Connect(function()
+            while wait()do
                 if des == true then
                     for i,v in pairs(Workspace:GetChildren()) do
                         if v.Name == "Imp" then
@@ -579,7 +622,7 @@ if game.PlaceId == 6403373529 or game.PlaceId == 11520107397 or game.PlaceId == 
                         end
                     end
                 end
-            end)
+            end
         end
     })
     local time = tab2:CreateButton({
