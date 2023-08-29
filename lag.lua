@@ -13,12 +13,19 @@ if game.PlaceId == 6403373529 or game.PlaceId == 11520107397 or game.PlaceId == 
     kickpart.CFrame = Workspace.Lobby.brazil.portal.CFrame
     kickpart.Parent = Workspace
     mycloud = game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name .. "_Cloud")
+    mynimbus = game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name .. "_Nimbus")
     spawn(function()
-        while true do
-            task.wait()
-            mycloud = Workspace:FindFirstChild(Players.LocalPlayer.Name .. "_Cloud")
+        while task.wait() do
+            if Workspace:FindFirstChild(Players.LocalPlayer.Name .. "_Cloud") then
+                mycloud = Workspace:FindFirstChild(Players.LocalPlayer.Name .. "_Cloud")
+            else if game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name .. "_Nimbus") then
+                mynimbus = game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name .. "_Nimbus")
+            else mynimbus = nil
+                mycloud = nil
+            end
         end
-    end)
+    end
+end)
     local GloveAbilitys = {
         ["Default"] = game:GetService("ReplicatedStorage"):WaitForChild("b"),
         ["Pusher"] = game:GetService("ReplicatedStorage"):WaitForChild("PusherWall"),
@@ -491,11 +498,21 @@ if game.PlaceId == 6403373529 or game.PlaceId == 11520107397 or game.PlaceId == 
         Flag = "Fling",
         Callback = function(fling)
             if fling == true then
-                mycloud.BodyGyro.D = -1000000000000
-                wait()
-                char.HumanoidRootPart.Anchored = true
+                if mynimbus then
+                    mynimbus.BodyGyro.D = -1000000000000
+                    wait()
+                    char.HumanoidRootPart.Anchored = true
+                elseif mycloud then
+                    mycloud.BodyGyro.D = -10000000000000
+                    wait()
+                    char.HumanoidRootPart.Anchored = true
+                end
             elseif fling == false then
-                mycloud.BodyGyro.D = 1000
+                if mycloud then
+                    mycloud.BodyGyro.D = 1000
+                elseif mynimbus then
+                    mynimbus.BodyGyro.D = 1000
+                end
                 char.HumanoidRootPart.Anchored = false
             end
         end
