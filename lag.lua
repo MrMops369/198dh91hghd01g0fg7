@@ -8,20 +8,23 @@ if game.PlaceId == 6403373529 or game.PlaceId == 11520107397 or game.PlaceId == 
     local glove = game.Players.LocalPlayer.leaderstats.Glove.Value
     local oldt = 0
     local invist = 1
+    getgenv()size = 25
+    httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
+    PlaceId, JobId = game.PlaceId, game.JobId
     local kickpart = Instance.new("Part")
     getgenv().shawnjbragdon = getgenv().shawnjbragdon or {}
     kickpart.CFrame = Workspace.Lobby.brazil.portal.CFrame
     kickpart.Parent = Workspace
-    mycloud = game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name .. "_Cloud")
+    mynimbus = game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name .. "_Cloud")
     mynimbus = game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name .. "_Nimbus")
     spawn(function()
         while task.wait() do
             if Workspace:FindFirstChild(Players.LocalPlayer.Name .. "_Cloud") then
-                mycloud = Workspace:FindFirstChild(Players.LocalPlayer.Name .. "_Cloud")
+                mynimbus = Workspace:FindFirstChild(Players.LocalPlayer.Name .. "_Cloud")
             else if game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name .. "_Nimbus") then
                 mynimbus = game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name .. "_Nimbus")
             else mynimbus = nil
-                mycloud = nil
+                mynimbus = nil
             end
         end
     end
@@ -251,16 +254,7 @@ end)
     local tab1 = Window:CreateTab("Lagging", nil)
     local tab2 = Window:CreateTab("Abilitys", nil)
     local tab3 = Window:CreateTab("Cloud Manipulation", nil)
-    local AwCrash = tab1:CreateButton({
-        Name = "Crash Server",
-        Callback = function()
-            local aw = 0
-            while aw <= 10000 do
-                game:GetService("ReplicatedStorage"):WaitForChild("Remote Events"):WaitForChild("Respawn"):FireServer()
-                aw = aw + 1
-            end
-        end
-    })
+    local tab4 = Window:CreateTab("Other stuff", nil)
     local long = tab1:CreateToggle({
         Name = "Long Lag (press the one key 2 or 3 times for server force reset)",
         CurrentValue = false,
@@ -502,14 +496,14 @@ end)
                     mynimbus.BodyGyro.D = -1000000000000
                     wait()
                     char.HumanoidRootPart.Anchored = true
-                elseif mycloud then
-                    mycloud.BodyGyro.D = -10000000000000
+                elseif mynimbus then
+                    mynimbus.BodyGyro.D = -10000000000000
                     wait()
                     char.HumanoidRootPart.Anchored = true
                 end
             elseif fling == false then
-                if mycloud then
-                    mycloud.BodyGyro.D = 1000
+                if mynimbus then
+                    mynimbus.BodyGyro.D = 1000
                 elseif mynimbus then
                     mynimbus.BodyGyro.D = 1000
                 end
@@ -520,9 +514,9 @@ end)
     local ck = tab3:CreateButton({
         Name = "Kick someone using Cloud(the player needs to be in the clouds seat)",
         Callback = function()
-            if mycloud ~= nil then
-                mycloud.CanTouch = false
-                mycloud.CanQuery = false
+            if mynimbus ~= nil then
+                mynimbus.CanTouch = false
+                mynimbus.CanQuery = false
                 local startpos = char.HumanoidRootPart.CFrame
                 local newCFrame = CFrame.new(
                     Vector3.new(game:GetService("Workspace").Lobby.brazil.portal.Position.X,
@@ -535,7 +529,7 @@ end)
                         v.CanQuery = false
                     end
                 end
-                for i, v in pairs(mycloud:GetDescendants()) do
+                for i, v in pairs(mynimbus:GetDescendants()) do
                     if v:IsA("Part") then
                         v.CanTouch = false
                         v.CanQuery = false
@@ -562,7 +556,7 @@ end)
                     wait()
                     char.HumanoidRootPart.CFrame = startpos
                 end
-                game:GetService("ReplicatedStorage"):WaitForChild("CloudAbility"):FireServer()
+                game:GetService("ReplicatedStorage"):WaitForChild("NimbusAbility"):FireServer()
             end
         end
     })
@@ -853,6 +847,119 @@ end)
                 })
                 created = true
             end
+        end
+    })
+    local server = tab4:CreateButton({
+        Name = "Server hop",
+        Callback = function()
+            if httprequest then
+                local servers = {}
+                local req = httprequest({Url = string.format("https://games.roblox.com/v1/games/%d/servers/Public?sortOrder=Desc&limit=100", game.PlaceId)})
+                local body = game.HttpService:JSONDecode(req.Body)
+                if body and body.data then
+                    for i, v in next, body.data do
+                        if type(v) == "table" and tonumber(v.playing) and tonumber(v.maxPlayers) and v.playing < v.maxPlayers and v.id ~= JobId then
+                            table.insert(servers, 1, v.id)
+                        end
+                    end
+                end
+                if #servers > 0 then
+                    game.TeleportService:TeleportToPlaceInstance(PlaceId, servers[math.random(1, #servers)], Players.LocalPlayer)
+                end
+            end
+        end
+    })
+    local rejoin = tab4:CreateButton({
+        Name = "Rejoin the server",
+        Callback = function()
+            game:GetService("TeleportService"):Teleport(PlaceId, game:GetService("Players").LocalPlayer)
+        end
+    })
+    local hitbox = tab4:CreateToggle({
+        Name = "Increase the Hitbox of other Players",
+        CurrentValue = false,
+        Flag = "Hitbox",
+        Callback = function (hit)
+            while task.wait() do
+                if hit == true then
+                    for i,v in pairs(Players:GetChildren()) do
+                        if v ~= Players.LocalPlayer then
+                            if v.Character and v.Character:FindFirstChild("entered") and v.Character:FindFirstChild("HumanoidRootPart") ~= nil and v.Character.Head:FindFirstChild("UnoReverseCard") == nil then
+                                wait(0.1)
+                                if v.Character and v.Character:FindFirstChild("entered") and v.Character:FindFirstChild("HumanoidRootPart") ~= nil then
+                                    v.Character.HumanoidRootPart.Size = Vector3.new(size, size, size)
+                                    v.Character.HumanoidRootPart.Transparency = 0.4
+                                    v.Character.HumanoidRootPart.CanCollide = false
+                                end
+                            elseif v.Character and v.Character:FindFirstChild("entered") and v.Character:FindFirstChild("HumanoidRootPart") ~= nil then
+                                v.Character.HumanoidRootPart.Size = char.HumanoidRootPart.Size
+                                v.Character.HumanoidRootPart.Transparency = 1
+                            end
+                        end
+                    end
+                elseif hit == false then
+                    for i,v in pairs(Players:GetChildren()) do
+                        if not v==Players.LocalPlayer then
+                            if v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
+                                v.Character.HumanoidRootPart.Size = char.HumanoidRootPart.Size
+                                v.Character.HumanoidRootPart.Transparency = 1
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    })
+    notified = false
+    local slidy = tab4:CreateSlider({
+        Name = "Hitbox size",
+        Range = { 0, 200 },
+        Increment = 1,
+        Suffix = "Studs",
+        CurrentValue = 10,
+        Flag = "Hitty",
+        Callback = function(Value)
+            while true do
+                task.wait()
+                size = Value
+                if size >= 25 and notified == false then
+                    Rayfield:Notify({
+                    Title = "Hitbox",
+                    Content = "You won't be able to slap Players further more than 25 studs away, but your sentries can go further",
+                    Duration = 20,
+                    Image = 4483362458,
+                    Actions = { 
+                        },
+                    })
+                    notified = true
+                end
+            end
+        end
+    })
+    antiii = false
+    local antikb = tab4:CreateToggle({
+        Name = "Glitchy Anti KB",
+        CurrentValue = false,
+        Flag = "ANTIHUIGIGU",
+        Callback = function(hgu)
+            if antiii == false and hgu == true then
+                char.Ragdolled.Changed:Connect(function(anr)
+                    local pos = char.HumanoidRootPart.Position
+                    if anr == true then
+                        local p = Instance.new("BodyPosition")
+                        p.Parent = char.HumanoidRootPart
+                        p.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+                        p.D = 1250
+                        p.P = 100000
+                        p.Position = pos
+                        repeat task.wait() until char.Ragdolled == false
+                        p:Destroy()
+                    end
+                end)
+                antiii = true
+            end
+            repeat task.wait() until hgu == false
+            antiii = false
         end
     })
 end
