@@ -10,9 +10,9 @@ if game.PlaceId == 6403373529 or game.PlaceId == 11520107397 or game.PlaceId == 
     local invist = 1
     getgenv()size = 25
     httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
-    PlaceId, JobId = game.PlaceId, game.JobId
+    PlaceId, JobId = game.PlaceId, game.JobId -- Infinite Yield variables
     local kickpart = Instance.new("Part")
-    getgenv().shawnjbragdon = getgenv().shawnjbragdon or {}
+    getgenv().shawnjbragdon = getgenv().shawnjbragdon or {} -- from the Infinitestore
     kickpart.CFrame = Workspace.Lobby.brazil.portal.CFrame
     kickpart.Parent = Workspace
     mynimbus = game.Workspace:FindFirstChild(game.Players.LocalPlayer.Name .. "_Cloud")
@@ -75,7 +75,7 @@ end)
         end
         fireclickdetector(Workspace.Lobby[current].ClickDetector)
     end
-    local function getGlove()
+    local function getGlove() -- from hub that exists
         return game.Players.LocalPlayer.leaderstats.Glove.Value
     end
     spawn(function()
@@ -86,7 +86,14 @@ end)
             end
         end
     end)
-
+    local GetPlayer = function(string)
+        local lower = string:lower()
+        for _, plr in next, game.Players:GetPlayers() do
+            if plr.Name:sub(1,#string):lower() == lower then
+                return plr
+            end
+        end
+    end
 
     local function cloudsteal()
         for i, v in pairs(game:GetService("Workspace"):GetDescendants()) do
@@ -960,6 +967,25 @@ end)
             end
             repeat task.wait() until hgu == false
             antiii = false
+        end
+    })
+    local antislap = tab4:CreateInput({
+        Name = "kick a player with slap aura/orbit (needs elude)",
+        PlaceholderText = "Player name",
+        RemoveTextAfterFocusLost = true,
+        Callback = function(slappy)
+            while task.wait() do
+                if char and char:FindFirstChild("entered") and Players.LocalPlayer.leaderstats.Glove.Value == "Elude" and GetPlayer(slappy) and GetPlayer(slappy).Character then
+                    if GetPlayer(slappy).Character.HumanoidRootPart:FindFirstChild("OrbitGloves") then
+                        char.HumanoidRootPart.CFrame = GetPlayer(slappy).Character.HumanoidRootPart:FindFirstChild("OrbitGloves").HingePart.Gloves["1"].CFrame
+                    elseif GetPlayer(slappy).Character:FindFirstChildOfClass("Tool") then
+                        local ptool = GetPlayer(slappy).Character:FindFirstChildOfClass("Tool")
+                        char.HumanoidRootPart.CFrame = ptool:FindFirstChildOfClass("Part").CFrame
+                    else
+                        char.HumanoidRootPart.CFrame = GetPlayer(slappy).Character.HumanoidRootPart.CFrame
+                    end
+                end
+            end
         end
     })
 end
