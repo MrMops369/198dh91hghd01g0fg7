@@ -952,7 +952,7 @@ end)
                         p.D = 1250
                         p.P = 100000
                         p.Position = pos
-                        repeat task.wait() until char.Ragdolled == false
+                        repeat task.wait() until char.Ragdolled.Value == false
                         p:Destroy()
                     end
                 end)
